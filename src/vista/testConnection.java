@@ -1,15 +1,15 @@
 package vista;
 
 import java.sql.Connection;
-import utilidades.conexion;
+import modelo.Conexion;
 
 public class testConnection extends javax.swing.JFrame {
 
-    conexion conn;
+    Conexion conn;
     
     public testConnection() {
         initComponents();
-        conn = new conexion();
+        conn = new Conexion();
         this.setLocationRelativeTo(null);
     }
 

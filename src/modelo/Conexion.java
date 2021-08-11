@@ -1,4 +1,4 @@
-package utilidades;
+package modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 //Clase para conectar a base de datos
 
-public class conexion {
+public class Conexion {
     private static Connection conn; //Objeto tipo connection
     private static final String driver = "com.mysql.cj.jdbc.Driver"; //Controlador de la conexión
     private static final String user = "root";
@@ -14,7 +14,7 @@ public class conexion {
     private static final String url = "jdbc:mysql://localhost/biblioteca";
 
     //Constructor
-    public conexion() {
+    public Conexion() {
         conn = null;
     }
     
