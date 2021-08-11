@@ -5,8 +5,9 @@
         <group name="Uniremington">
             <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/modelo/Genero.java</file>
             <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/modelo/Editorial.java</file>
-            <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/modelo/Asignacion.java</file>
+            <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/vista/ModuloGenero.java</file>
             <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/modelo/Libro.java</file>
+            <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/modelo/ConsultasGenero.java</file>
             <file>file:/E:/user/Documents/Programacion/Java/Uniremington/Biblioteca/src/vista/ModuloLibros.java</file>
         </group>
     </open-files>
