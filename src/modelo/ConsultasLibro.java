@@ -7,18 +7,22 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConsultasGenero extends Conexion{
+public class ConsultasLibro extends Conexion{
     
-    public boolean registrar(Genero gen){
+    public boolean registrar(Libro ejemplar){
         PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
-        String sql = "INSERT INTO genero (id_genero, nombre) VALUES (?,?)";
+        String sql = "INSERT INTO genero (isbn, nombre, cantidad, autor, calificacion, n_editorial) VALUES (?,?,?,?,?,?)";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
-            ps.setString(2, gen.getNombre());
+            ps.setInt(1, ejemplar.getIsbn());
+            ps.setString(2, ejemplar.getNombre());
+            ps.setInt(3, ejemplar.getCantidad());
+            ps.setString(4, ejemplar.getAutor());
+            ps.setFloat(5, ejemplar.getCalificacion());
+            ps.setInt(6, ejemplar.getN_editorial());
             ps.execute();
             return true;
         } catch(SQLException e) {
