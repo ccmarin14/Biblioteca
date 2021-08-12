@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConsultasGenero extends Conexion{
     
@@ -93,18 +95,18 @@ public class ConsultasGenero extends Conexion{
             if (rs.next()) {
                 gen.setId_genero(rs.getInt("id_genero"));
                 gen.setNombre(rs.getString("nombre"));
-                return true;
+                return true;   
             }
             return false;
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } finally {
+        } /*finally {
             try {
                 conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
+            } catch (SQLException ex) {
+                Logger.getLogger(ConsultasGenero.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
     }
 }

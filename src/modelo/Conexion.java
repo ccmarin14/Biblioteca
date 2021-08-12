@@ -23,14 +23,14 @@ public class Conexion {
         //Si la conexión es nula, se pasan los datos al objeto.
         if (conn == null){
             try {
-            //Se indica el driver de la conexión
-            Class.forName(driver);
-            //Se pasan los valores al método de la conexión y se guarda el resultado en el objeto.
-            conn = DriverManager.getConnection(url, user, password);
-                //En caso de que el valor sea diferente de "null", significa que la conexión se establecio.
-                if(conn != null){
-                    System.out.println("Conexión establecida.");
-                }
+                //Se indica el driver de la conexión
+                Class.forName(driver);
+                //Se pasan los valores al método de la conexión y se guarda el resultado en el objeto.
+                conn = DriverManager.getConnection(url, user, password);
+                    //En caso de que el valor sea diferente de "null", significa que la conexión se establecio.
+                    if(conn != null){
+                        System.out.println("Conexión establecida.");
+                    }
             }
             //Se hay un error en la conexión, se muestra el mensaje de error.
             catch (ClassNotFoundException | SQLException e) {
