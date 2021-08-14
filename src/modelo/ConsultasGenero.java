@@ -1,11 +1,7 @@
 package modelo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.*;
 
 public class ConsultasGenero extends Conexion{
     
@@ -108,5 +104,28 @@ public class ConsultasGenero extends Conexion{
                 Logger.getLogger(ConsultasGenero.class.getName()).log(Level.SEVERE, null, ex);
             }
         }*/
+    }
+
+    public List consultar() {
+        List<Genero> lstGen = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection conn = getUpConnection();
+        
+        String sql = "SELECT * FROM genero";
+        
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Genero g = new Genero();
+                g.setId_genero(rs.getInt(1));
+                g.setNombre(rs.getString(2));
+                lstGen.add(g);
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return lstGen;
     }
 }

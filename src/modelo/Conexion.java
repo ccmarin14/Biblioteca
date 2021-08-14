@@ -11,7 +11,7 @@ public class Conexion {
     private static final String driver = "com.mysql.cj.jdbc.Driver"; //Controlador de la conexión
     private static final String user = "root";
     private static final String password = "";
-    private static final String url = "jdbc:mysql://localhost/biblioteca";
+    private static final String url = "jdbc:mysql://localhost:3306/biblioteca";
 
     //Constructor
     public Conexion() {
@@ -37,23 +37,7 @@ public class Conexion {
                 System.out.println("Error al crear la conexión.");
                 //throw new RuntimeException ("Error al crear la conexión");
             }
-        //En caso de que la conexión ya este activa, se informa.
-        } else {
-            System.out.println("La conexión ya está activa.");
-        }
-        return conn;
-    }
-    
-    //Método para bajar la conexión
-    public void getDownConnection() {
-        //Se valida si la conexión esta abajo, en caso de estarlo, se informa.
-        if (conn == null ){
-            System.out.println("La conexión no se ha establecido.");
-        //Si la conexión está arriba, se pasa el valor "null" a la conexión y se informa que la conexión finalizo.
-        } else {
-            conn = null;
-            System.out.println("Conexión terminada");
-        }
+        } return conn;
     }
 }
     

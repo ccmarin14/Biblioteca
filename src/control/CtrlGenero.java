@@ -1,10 +1,10 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-import modelo.ConsultasGenero;
-import modelo.Genero;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import modelo.*;
 import vista.ModuloGenero;
 
 public class CtrlGenero implements ActionListener{
@@ -12,15 +12,17 @@ public class CtrlGenero implements ActionListener{
     private Genero gen;
     private ConsultasGenero consultas;
     private ModuloGenero modulo;
+    private DefaultTableModel modelo;
+    private List<Genero> lstGen;
 
     public CtrlGenero(Genero gen, ConsultasGenero consultas, ModuloGenero modulo) {
         this.gen = gen;
         this.consultas = consultas;
         this.modulo = modulo;
-        this.modulo.btnConsultar.addActionListener(this);
         this.modulo.btnEliminar.addActionListener(this);
         this.modulo.btnGuardar.addActionListener(this);
         this.modulo.btnLimpiar.addActionListener(this);
+        
     }
     
     //Parametrizar vista
@@ -28,6 +30,7 @@ public class CtrlGenero implements ActionListener{
         modulo.setTitle("Generos");
         //Centrar vista
         modulo.setLocationRelativeTo(null);
+        listar(modulo.tableGenero);
     }
         
     //Limpiar texto
@@ -36,6 +39,22 @@ public class CtrlGenero implements ActionListener{
         modulo.txtNombre.setText(null);
     }
 
+    //Listar en una tabla.
+    public void listar (JTable tabla){
+        //Se asigna la tabla de la vista al modelo.
+        modelo =  (DefaultTableModel)tabla.getModel();
+        lstGen = consultas.consultar();
+
+        Object[]object = new Object[2];
+        for (int i = 0; i < lstGen.size(); i++) {
+            object[0] = lstGen.get(i).getId_genero();
+            object[1] = lstGen.get(i).getNombre();
+            modelo.addRow(object);
+        }
+        //Paso del modelo a la vista
+        modulo.tableGenero.setModel(modelo);
+    }
+    
     //Metodo para validar que botón se presiona
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -68,16 +87,9 @@ public class CtrlGenero implements ActionListener{
                 limpiar();
             }
         }
-        //Botón para consultar
-        if (e.getSource() == modulo.btnConsultar) {
-            gen.setId_genero(Integer.parseInt(modulo.txtId.getText()));
-            //Consulta para eliminar el registro
-            if (consultas.consultar(gen)) {
-                modulo.txtNombre.setText(gen.getNombre());
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al consultar");
-                limpiar();
-            }            
+        //
+        if (e.getSource() == modulo.btnEditar){
+            
         }
     } 
     
