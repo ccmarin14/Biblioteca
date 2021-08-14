@@ -37,16 +37,21 @@ public class ConsultasLibro extends Conexion{
         }*/
     }
     
-    public boolean modificar(Genero gen){
+    public boolean modificar(Libro ejemplar){
         PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
-        String sql = "UPDATE genero SET id nombre = ? WHERE id_genero = ?";
+        String sql = "UPDATE libro SET nombre = ?, cantidad = ?, autor = ?, calificacion = ?, n_editorial = ? WHERE isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setString(1, gen.getNombre());
-            ps.setInt(2, gen.getId_genero());
+            ps.setInt(1, ejemplar.getIsbn());
+            ps.setString(2, ejemplar.getNombre());
+            ps.setInt(3, ejemplar.getCantidad());
+            ps.setString(4, ejemplar.getAutor());
+            ps.setFloat(5, ejemplar.getCalificacion());
+            ps.setInt(6, ejemplar.getN_editorial());
+            ps.setInt(7, ejemplar.getIsbn());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -61,15 +66,15 @@ public class ConsultasLibro extends Conexion{
         }*/
     }
     
-    public boolean eliminar(Genero gen){
+    public boolean eliminar(Libro ejemplar){
         PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
-        String sql = "DELETE FROM genero WHERE id_genero = ?";
+        String sql = "DELETE FROM libro WHERE isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
+            ps.setInt(1, ejemplar.getIsbn());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -84,21 +89,24 @@ public class ConsultasLibro extends Conexion{
         }*/
     }
       
-    public boolean consultar(Genero gen){
+    public boolean consultar(Libro ejemplar){
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection conn = getUpConnection();
         
-        String sql = "SELECT * FROM genero WHERE id_genero = ?";
+        String sql = "SELECT * FROM genero WHERE isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
+            ps.setInt(1, ejemplar.getIsbn());
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                gen.setId_genero(rs.getInt("id_genero"));
-                gen.setNombre(rs.getString("nombre"));
+                ejemplar.setNombre(rs.getString("nombre"));
+                ejemplar.setCantidad(rs.getInt("cantidad"));
+                ejemplar.setAutor(rs.getString("autor"));
+                ejemplar.setCalificacion(rs.getFloat("calififacion"));
+                ejemplar.setN_editorial(rs.getInt("n_editorial"));
                 return true;   
             }
             return false;

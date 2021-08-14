@@ -7,18 +7,18 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConsultasGenero extends Conexion{
+public class ConsultasAsignacion extends Conexion{
     
-    public boolean registrar(Genero gen){
+    public boolean registrar(Asignacion asg){
         PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
-        String sql = "INSERT INTO genero (id_genero, nombre) VALUES (?,?)";
+        String sql = "INSERT INTO asignacion (n_isbn, n_genero) VALUES (?,?)";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
-            ps.setString(2, gen.getNombre());
+            ps.setInt(1, asg.getN_isbn());
+            ps.setInt(2, asg.getN_genero());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -32,40 +32,16 @@ public class ConsultasGenero extends Conexion{
             }
         }*/
     }
-    
-    public boolean modificar(Genero gen){
+     
+    public boolean eliminar(Asignacion asg){
         PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
-        String sql = "UPDATE genero SET nombre = ? WHERE id_genero = ?";
+        String sql = "DELETE FROM asignacion WHERE n_isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setString(1, gen.getNombre());
-            ps.setInt(2, gen.getId_genero());
-            ps.execute();
-            return true;
-        } catch(SQLException e) {
-            System.err.println(e);
-            return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
-    }
-    
-    public boolean eliminar(Genero gen){
-        PreparedStatement ps = null;
-        Connection conn = getUpConnection();
-        
-        String sql = "DELETE FROM genero WHERE id_genero = ?";
-        
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
+            ps.setInt(1, asg.getN_isbn());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -80,21 +56,21 @@ public class ConsultasGenero extends Conexion{
         }*/
     }
       
-    public boolean consultar(Genero gen){
+    public boolean consultar(Asignacion asg){
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection conn = getUpConnection();
         
-        String sql = "SELECT * FROM genero WHERE id_genero = ?";
+        String sql = "SELECT * FROM asignacion WHERE n_isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
+            ps.setInt(1, asg.getN_genero());
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                gen.setId_genero(rs.getInt("id_genero"));
-                gen.setNombre(rs.getString("nombre"));
+                asg.setN_isbn(rs.getInt("n_isbn"));
+                asg.setN_genero(rs.getInt("n_genero"));
                 return true;   
             }
             return false;

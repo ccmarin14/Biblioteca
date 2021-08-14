@@ -56,6 +56,5 @@ public class Libro {
 
     public void setN_editorial(int n_editorial) {
         this.n_editorial = n_editorial;
-    }
-    
+    }   
 }
