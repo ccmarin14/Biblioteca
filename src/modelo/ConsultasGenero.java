@@ -76,36 +76,6 @@ public class ConsultasGenero extends Conexion{
         }*/
     }
       
-    public boolean consultar(Genero gen){
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection conn = getUpConnection();
-        
-        String sql = "SELECT * FROM genero WHERE id_genero = ?";
-        
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, gen.getId_genero());
-            rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                gen.setId_genero(rs.getInt("id_genero"));
-                gen.setNombre(rs.getString("nombre"));
-                return true;   
-            }
-            return false;
-        } catch(SQLException e) {
-            System.err.println(e);
-            return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ConsultasGenero.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
-    }
-
     public List consultar() {
         List<Genero> lstGen = new ArrayList<>();
         PreparedStatement ps = null;
