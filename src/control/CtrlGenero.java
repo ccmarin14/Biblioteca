@@ -13,7 +13,6 @@ public class CtrlGenero implements ActionListener{
     private ConsultasGenero consultas;
     private ModuloGenero modulo;
     private DefaultTableModel modelo;
-    private DefaultTableModel modeloInicial;
     private List<Genero> lstGen;
 
     public CtrlGenero(Genero gen, ConsultasGenero consultas, ModuloGenero modulo) {
@@ -33,8 +32,6 @@ public class CtrlGenero implements ActionListener{
         modulo.setTitle("Generos");
         //Centrar vista
         modulo.setLocationRelativeTo(null);
-        //Se asigna la tabla de la vista al modelo.
-        modeloInicial =  (DefaultTableModel)modulo.tableGenero.getModel();
         //Consultar lista
         listar();
         //Desactivar botones
@@ -50,9 +47,12 @@ public class CtrlGenero implements ActionListener{
 
     //Listar en una tabla.
     public void listar (){
+        //Se asigna la tabla de la vista al modelo.
+        modelo =  (DefaultTableModel)modulo.tableGenero.getModel();
         lstGen = consultas.consultar();
-        modelo = modeloInicial;
-        Object[]object = new Object[2];
+        //Arrays de objetos con la cantidad de columnas a traer de la tabla
+        Object[] object = new Object[2];
+       
         for (int i = 0; i < lstGen.size(); i++) {
             object[0] = lstGen.get(i).getId_genero();
             object[1] = lstGen.get(i).getNombre();
@@ -74,7 +74,20 @@ public class CtrlGenero implements ActionListener{
             modulo.btnActualizar.setEnabled(true);
             modulo.btnEliminar.setEnabled(true);
         }
-
+    }
+    
+    public void limpiarTabla() {
+        for (int i = 0; i < modulo.tableGenero.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i-=1;
+        }
+    }
+     
+    //Consolidación de metodos
+    public void ajustar () {
+        limpiarTabla();
+        limpiar();
+        listar();
     }
     
     //Metodo para validar boton presionado
@@ -87,14 +100,13 @@ public class CtrlGenero implements ActionListener{
             //Consulta para almacenar los datos del genero en base de datos
             if (consultas.registrar(gen)) {
                 JOptionPane.showMessageDialog(null, "Registro guardado");
-                limpiar();
-                listar();
+                ajustar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al guardar");
                 limpiar();
             }
         }
-        // Botón para actualiza datos de texto en objeto genero
+        // Botón para actualizar datos de texto en objeto genero
         if (e.getSource() == modulo.btnActualizar) {
             gen.setId_genero(Integer.parseInt(modulo.txtId.getText()));
             gen.setNombre(modulo.txtNombre.getText());
@@ -102,8 +114,7 @@ public class CtrlGenero implements ActionListener{
             if (consultas.modificar(gen)) {
                 JOptionPane.showMessageDialog(null, "Registro actualizado");
                 activarBotones(true);
-                listar();
-                limpiar();
+                ajustar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al actualizar");
                 limpiar();
@@ -121,23 +132,26 @@ public class CtrlGenero implements ActionListener{
             if (consultas.eliminar(gen)) {
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
                 activarBotones(true);
-                listar();
-                limpiar();
+                ajustar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al borrar");
                 limpiar();
             }
         }
-        //
+        //Botón para seleccionar y habilitar la edición de un registro
         if (e.getSource() == modulo.btnEditar){
             int fila = modulo.tableGenero.getSelectedRow();
             if (fila == -1) {
                 JOptionPane.showMessageDialog(modulo, "Debe seleccionar una fila");
             } else {
+                //Asignar valores de la tabla a las variables
                 gen.setId_genero(Integer.parseInt((String)modulo.tableGenero.getValueAt(fila,0).toString()));
                 gen.setNombre((String)modulo.tableGenero.getValueAt(fila,1));
+                
+                //Mostrar en campos de texto las variables
                 modulo.txtId.setText(Integer.toString(gen.getId_genero()));
                 modulo.txtNombre.setText(gen.getNombre());
+                
                 activarBotones(false);
             }
             
