@@ -12,11 +12,11 @@ public class ConsultasLibro extends Conexion{
     public boolean registrar(Libro ejemplar){
         Connection conn = getUpConnection();
         
-        String sql = "INSERT INTO genero (isbn, nombre, cantidad, autor, calificacion, n_editorial) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO libro (isbn, nombre, cantidad, autor, calificacion, n_editorial) VALUES (?,?,?,?,?,?)";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, ejemplar.getIsbn());
+            ps.setLong(1, ejemplar.getIsbn());
             ps.setString(2, ejemplar.getNombre());
             ps.setInt(3, ejemplar.getCantidad());
             ps.setString(4, ejemplar.getAutor());
@@ -37,13 +37,13 @@ public class ConsultasLibro extends Conexion{
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, ejemplar.getIsbn());
+            ps.setLong(1, ejemplar.getIsbn());
             ps.setString(2, ejemplar.getNombre());
             ps.setInt(3, ejemplar.getCantidad());
             ps.setString(4, ejemplar.getAutor());
             ps.setFloat(5, ejemplar.getCalificacion());
             ps.setInt(6, ejemplar.getN_editorial());
-            ps.setInt(7, ejemplar.getIsbn());
+            ps.setLong(7, ejemplar.getIsbn());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -59,7 +59,7 @@ public class ConsultasLibro extends Conexion{
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, ejemplar.getIsbn());
+            ps.setLong(1, ejemplar.getIsbn());
             ps.execute();
             return true;
         } catch(SQLException e) {
@@ -69,23 +69,28 @@ public class ConsultasLibro extends Conexion{
     }
       
     public List consultar() {
-        List<Genero> lstGen = new ArrayList<>();
+        List<Libro> lstLibro = new ArrayList<>();
         Connection conn = getUpConnection();
         
-        String sql = "SELECT * FROM genero";
+        String sql = "SELECT * FROM libro";
         
         try {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Genero g = new Genero();
-                g.setId_genero(rs.getInt(1));
-                g.setNombre(rs.getString(2));
-                lstGen.add(g);
+                Libro ejp = new Libro();
+                ejp.setIsbn(rs.getLong(1));
+                ejp.setNombre(rs.getString(2));
+                ejp.setCantidad(rs.getInt(3));
+                //Reemplazar para que importe el nombre
+                ejp.setAutor(rs.getString(4));
+                ejp.setCalificacion(rs.getFloat(5));
+                ejp.setN_editorial(rs.getInt(6));
+                lstLibro.add(ejp);
             }
         } catch (Exception e) {
             System.err.println(e);
         }
-        return lstGen;
+        return lstLibro;
     }
 }

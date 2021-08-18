@@ -1,6 +1,11 @@
 
 package vista;
 
+import control.CtrlGenero;
+import control.CtrlLibro;
+import modelo.ConsultasGenero;
+import modelo.Genero;
+
 public class ModuloLibro extends javax.swing.JFrame {
 
     public ModuloLibro() {
@@ -31,7 +36,7 @@ public class ModuloLibro extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        btnEditarrGeneros = new javax.swing.JButton();
+        btnEditarGeneros = new javax.swing.JButton();
         btnEditarEditoriales = new javax.swing.JButton();
         listEditorial = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
@@ -104,7 +109,12 @@ public class ModuloLibro extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(51, 51, 51));
         jLabel9.setText("Genero");
 
-        btnEditarrGeneros.setText("Editar");
+        btnEditarGeneros.setText("Editar");
+        btnEditarGeneros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarGenerosActionPerformed(evt);
+            }
+        });
 
         btnEditarEditoriales.setText("Editar");
         btnEditarEditoriales.addActionListener(new java.awt.event.ActionListener() {
@@ -129,11 +139,11 @@ public class ModuloLibro extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ISBN", "Nombre", "Genero", "Autor", "Editorial", "Cantidad", "Calificación"
+                "ISBN", "Nombre", "Autor", "Genero", "Editorial", "Calificación", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -149,17 +159,12 @@ public class ModuloLibro extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblLibro);
         if (tblLibro.getColumnModel().getColumnCount() > 0) {
-            tblLibro.getColumnModel().getColumn(0).setResizable(false);
             tblLibro.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tblLibro.getColumnModel().getColumn(1).setResizable(false);
             tblLibro.getColumnModel().getColumn(1).setPreferredWidth(150);
-            tblLibro.getColumnModel().getColumn(2).setResizable(false);
-            tblLibro.getColumnModel().getColumn(3).setResizable(false);
-            tblLibro.getColumnModel().getColumn(4).setResizable(false);
             tblLibro.getColumnModel().getColumn(5).setResizable(false);
-            tblLibro.getColumnModel().getColumn(5).setPreferredWidth(50);
+            tblLibro.getColumnModel().getColumn(5).setPreferredWidth(60);
             tblLibro.getColumnModel().getColumn(6).setResizable(false);
-            tblLibro.getColumnModel().getColumn(6).setPreferredWidth(60);
+            tblLibro.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -203,7 +208,7 @@ public class ModuloLibro extends javax.swing.JFrame {
                                     .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(190, 190, 190)
-                                        .addComponent(btnEditarrGeneros)))
+                                        .addComponent(btnEditarGeneros)))
                                 .addGap(0, 32, Short.MAX_VALUE)))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +266,7 @@ public class ModuloLibro extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel9)
-                                    .addComponent(btnEditarrGeneros))
+                                    .addComponent(btnEditarGeneros))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -294,6 +299,16 @@ public class ModuloLibro extends javax.swing.JFrame {
 
     private void btnEditarEditorialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEditorialesActionPerformed
     }//GEN-LAST:event_btnEditarEditorialesActionPerformed
+
+    private void btnEditarGenerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarGenerosActionPerformed
+            /*Genero gen = new Genero();
+            ConsultasGenero cGen = new ConsultasGenero();
+            ModuloGenero mGen = new ModuloGenero();
+            CtrlGenero ctrlGen = new CtrlGenero(gen, cGen, mGen);
+
+            ctrlGen.iniciar();
+            mGen.setVisible(true);*/
+    }//GEN-LAST:event_btnEditarGenerosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -342,7 +357,7 @@ public class ModuloLibro extends javax.swing.JFrame {
     public javax.swing.JButton btnConsultar;
     public javax.swing.JButton btnEditar;
     public javax.swing.JButton btnEditarEditoriales;
-    public javax.swing.JButton btnEditarrGeneros;
+    public javax.swing.JButton btnEditarGeneros;
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnLimpiar;

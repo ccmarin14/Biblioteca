@@ -89,7 +89,7 @@ public class CtrlGenero implements ActionListener{
         limpiar();
         listar();
     }
-    
+        
     //Metodo para validar boton presionado
     @Override
     public void actionPerformed(ActionEvent e) {

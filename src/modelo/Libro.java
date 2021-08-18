@@ -3,18 +3,18 @@ package modelo;
 
 public class Libro {
     
-    private int isbn;
+    private long isbn;
     private String nombre;
     private int cantidad;
     private String autor;
     private float calificacion;
     private int n_editorial;
 
-    public int getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(long isbn) {
         this.isbn = isbn;
     }
 

@@ -8,13 +8,12 @@ public class clasePrincipal {
 
     public static void main(String[] args) {
         
-        Genero gen = new Genero();
-        ConsultasGenero cGen = new ConsultasGenero();
-        ModuloGenero mGen = new ModuloGenero();
+        Libro ejemplar = new Libro();
+        ConsultasLibro cEjemplar = new ConsultasLibro();
+        ModuloLibro mEjemplar = new ModuloLibro();
         
-        CtrlGenero ctrlGen = new CtrlGenero(gen, cGen, mGen);
-        ctrlGen.iniciar();
-        mGen.setVisible(true);
-    }
-    
+        CtrlLibro ctrlLibro = new CtrlLibro(ejemplar, cEjemplar, mEjemplar);
+        ctrlLibro.iniciar();
+        mEjemplar.setVisible(true);
+    } 
 }
