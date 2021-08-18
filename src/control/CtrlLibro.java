@@ -1,10 +1,10 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-import modelo.ConsultasLibro;
-import modelo.Libro;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import modelo.*;
 import vista.ModuloLibro;
 
 public class CtrlLibro implements ActionListener{
@@ -12,6 +12,8 @@ public class CtrlLibro implements ActionListener{
     private Libro ejemplar;
     private ConsultasLibro consultas;
     private ModuloLibro modulo;
+    private DefaultTableModel modelo;
+    private List<Genero> lstLibro;
 
     public CtrlLibro(Libro ejemplar, ConsultasLibro consultas, ModuloLibro modulo) {
         this.ejemplar = ejemplar;
@@ -22,7 +24,7 @@ public class CtrlLibro implements ActionListener{
         this.modulo.btnGuardar.addActionListener(this);
         this.modulo.btnLimpiar.addActionListener(this);
         this.modulo.btnActualizar.addActionListener(this);
-        this.modulo.btnRegistrar.addActionListener(this);
+        this.modulo.btnEditar.addActionListener(this);
         this.modulo.btnEditarEditoriales.addActionListener(this);
         this.modulo.btnEditarrGeneros.addActionListener(this);
     }
@@ -73,15 +75,32 @@ public class CtrlLibro implements ActionListener{
             }
         }
         //Botón para consultar
-        if (e.getSource() == modulo.btnConsultar) {
+        /*if (e.getSource() == modulo.btnConsultar) {
             ejemplar.setIsbn(Integer.parseInt(modulo.txtISBN.getText()));
             //Consulta para eliminar el registro
-            if (consultas.consultar(ejemplar)) {
+            if (consultas.consultar()) {
                 modulo.txtNombre.setText(ejemplar.getNombre());
             } else {
                 JOptionPane.showMessageDialog(null, "Error al consultar");
                 limpiar();
             }            
+        }*/
+                //Botón para seleccionar y habilitar la edición de un registro
+        if (e.getSource() == modulo.btnEditar){
+            int fila = modulo.tblLibro.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(modulo, "Debe seleccionar una fila");
+            } else {
+                //Asignar valores de la tabla a las variables
+                ejemplar.setIsbn(Integer.parseInt((String)modulo.tblLibro.getValueAt(fila,0).toString()));
+                ejemplar.setNombre((String)modulo.tblLibro.getValueAt(fila,1));
+                
+                //Mostrar en campos de texto las variables
+                modulo.txtISBN.setText(Integer.toString(ejemplar.getIsbn()));
+                modulo.txtNombre.setText(ejemplar.getNombre());
+                
+                activarBotones(false);
+            }
         }
     } 
     

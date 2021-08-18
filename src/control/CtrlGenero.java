@@ -154,8 +154,6 @@ public class CtrlGenero implements ActionListener{
                 
                 activarBotones(false);
             }
-            
         }
     } 
-    
 }

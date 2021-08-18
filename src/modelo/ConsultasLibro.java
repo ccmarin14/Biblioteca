@@ -1,16 +1,15 @@
 package modelo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.*;
 
 public class ConsultasLibro extends Conexion{
     
+    //Variables
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
     public boolean registrar(Libro ejemplar){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO genero (isbn, nombre, cantidad, autor, calificacion, n_editorial) VALUES (?,?,?,?,?,?)";
@@ -28,17 +27,10 @@ public class ConsultasLibro extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
     
     public boolean modificar(Libro ejemplar){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "UPDATE libro SET nombre = ?, cantidad = ?, autor = ?, calificacion = ?, n_editorial = ? WHERE isbn = ?";
@@ -57,17 +49,10 @@ public class ConsultasLibro extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
     
     public boolean eliminar(Libro ejemplar){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "DELETE FROM libro WHERE isbn = ?";
@@ -80,45 +65,27 @@ public class ConsultasLibro extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
       
-    public boolean consultar(Libro ejemplar){
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+    public List consultar() {
+        List<Genero> lstGen = new ArrayList<>();
         Connection conn = getUpConnection();
         
-        String sql = "SELECT * FROM genero WHERE isbn = ?";
+        String sql = "SELECT * FROM genero";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, ejemplar.getIsbn());
             rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                ejemplar.setNombre(rs.getString("nombre"));
-                ejemplar.setCantidad(rs.getInt("cantidad"));
-                ejemplar.setAutor(rs.getString("autor"));
-                ejemplar.setCalificacion(rs.getFloat("calififacion"));
-                ejemplar.setN_editorial(rs.getInt("n_editorial"));
-                return true;   
+            while (rs.next()) {
+                Genero g = new Genero();
+                g.setId_genero(rs.getInt(1));
+                g.setNombre(rs.getString(2));
+                lstGen.add(g);
             }
-            return false;
-        } catch(SQLException e) {
+        } catch (Exception e) {
             System.err.println(e);
-            return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ConsultasGenero.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
+        }
+        return lstGen;
     }
 }

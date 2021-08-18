@@ -5,8 +5,11 @@ import java.util.*;
 
 public class ConsultasGenero extends Conexion{
     
+    //Variables
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
     public boolean registrar(Genero gen){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO genero (id_genero, nombre) VALUES (?,?)";
@@ -20,17 +23,10 @@ public class ConsultasGenero extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
     
     public boolean modificar(Genero gen){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "UPDATE genero SET nombre = ? WHERE id_genero = ?";
@@ -44,17 +40,10 @@ public class ConsultasGenero extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
     
     public boolean eliminar(Genero gen){
-        PreparedStatement ps = null;
         Connection conn = getUpConnection();
         
         String sql = "DELETE FROM genero WHERE id_genero = ?";
@@ -67,19 +56,11 @@ public class ConsultasGenero extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
       
     public List consultar() {
         List<Genero> lstGen = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         Connection conn = getUpConnection();
         
         String sql = "SELECT * FROM genero";
