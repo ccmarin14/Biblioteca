@@ -93,4 +93,23 @@ public class ConsultasLibro extends Conexion{
         }
         return lstLibro;
     }
+    
+    /*
+    public String importarEditorial (int nEdit) {
+        String editorial = null;
+        Connection conn = getUpConnection();
+        
+        String sql = "SELECT nombre FROM editorial WHERE id_editorial= ?";
+        
+         try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,nEdit);
+            rs = ps.executeQuery();
+            editorial = rs.getString("nombre");
+            return editorial;
+        } catch (Exception e) {
+            System.err.println(e);
+            return editorial;
+        }
+    }*/
 }

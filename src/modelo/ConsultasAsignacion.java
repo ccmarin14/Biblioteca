@@ -77,12 +77,6 @@ public class ConsultasAsignacion extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ConsultasGenero.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
+        }
     }
 }

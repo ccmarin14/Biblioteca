@@ -55,6 +55,7 @@ public class CtrlLibro implements ActionListener{
             object[2] = lstLibro.get(i).getAutor();
             //Adicionar Genero
             object[4] = lstLibro.get(i).getN_editorial();
+            /*object[4] = consultas.importarEditorial(lstLibro.get(i).getN_editorial());*/
             object[5] = lstLibro.get(i).getCalificacion();
             object[6] = lstLibro.get(i).getCantidad();
 
