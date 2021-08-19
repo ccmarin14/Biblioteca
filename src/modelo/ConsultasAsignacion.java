@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 public class ConsultasAsignacion extends Conexion{
     
-    public boolean registrar(Asignacion asg){
         PreparedStatement ps = null;
+        ResultSet rs = null;
+    
+    public boolean registrar(Asignacion asg){
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO asignacion (n_isbn, n_genero) VALUES (?,?)";
@@ -24,13 +26,7 @@ public class ConsultasAsignacion extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
      
     public boolean eliminar(Asignacion asg){
@@ -47,18 +43,10 @@ public class ConsultasAsignacion extends Conexion{
         } catch(SQLException e) {
             System.err.println(e);
             return false;
-        } /*finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        }*/
+        }
     }
       
     public boolean consultar(Asignacion asg){
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         Connection conn = getUpConnection();
         
         String sql = "SELECT * FROM asignacion WHERE n_isbn = ?";

@@ -94,7 +94,7 @@ public class ConsultasLibro extends Conexion{
         return lstLibro;
     }
     
-    /*
+    
     public String importarEditorial (int nEdit) {
         String editorial = null;
         Connection conn = getUpConnection();
@@ -105,11 +105,31 @@ public class ConsultasLibro extends Conexion{
             ps = conn.prepareStatement(sql);
             ps.setInt(1,nEdit);
             rs = ps.executeQuery();
-            editorial = rs.getString("nombre");
-            return editorial;
+            rs.next();
+            editorial = rs.getString(1);
         } catch (Exception e) {
             System.err.println(e);
-            return editorial;
         }
-    }*/
+        return editorial;
+    }
+    
+    public String importarGeneros (long isbn) {
+        String generos = "";
+        Connection conn = getUpConnection();
+        
+        String sql = "SELECT nombre FROM asignacion JOIN genero ON (n_genero = id_genero) WHERE n_isbn= ?";
+        
+         try {
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1,isbn);
+            rs = ps.executeQuery();
+            for (int i = 0; rs.next(); i++) {
+                generos = generos + rs.getString(1) + ", ";
+            }
+            generos = generos.substring(0, generos.length()-2);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return generos;
+    }
 }
