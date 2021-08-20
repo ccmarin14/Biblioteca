@@ -29,40 +29,24 @@ public class ConsultasAsignacion extends Conexion{
             return false;
         }
     }
+    
+    public boolean modificar(long isbn, List<String> generos, ConsultasGenero cGen){
+        if (eliminar(isbn) && (registrar(isbn, generos, cGen))){
+            return true;
+        }
+        return false;
+    }
      
-    public boolean eliminar(Asignacion asg){
-        PreparedStatement ps = null;
+    public boolean eliminar(long isbn){
         Connection conn = getUpConnection();
         
         String sql = "DELETE FROM asignacion WHERE n_isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, asg.getN_isbn());
+            ps.setLong(1, isbn);
             ps.execute();
             return true;
-        } catch(SQLException e) {
-            System.err.println(e);
-            return false;
-        }
-    }
-      
-    public boolean consultar(Asignacion asg){
-        Connection conn = getUpConnection();
-        
-        String sql = "SELECT * FROM asignacion WHERE n_isbn = ?";
-        
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, asg.getN_genero());
-            rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                asg.setN_isbn(rs.getInt("n_isbn"));
-                asg.setN_genero(rs.getInt("n_genero"));
-                return true;   
-            }
-            return false;
         } catch(SQLException e) {
             System.err.println(e);
             return false;

@@ -34,21 +34,22 @@ public class ConsultasLibro extends Conexion{
 
     }
     
-    public boolean modificar(Libro ejemplar){
+    public boolean modificar(Libro ejemplar, List<String> generos, ConsultasAsignacion cAsg, ConsultasGenero cGen ){
         Connection conn = getUpConnection();
         
         String sql = "UPDATE libro SET nombre = ?, cantidad = ?, autor = ?, calificacion = ?, n_editorial = ? WHERE isbn = ?";
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setLong(1, ejemplar.getIsbn());
-            ps.setString(2, ejemplar.getNombre());
-            ps.setInt(3, ejemplar.getCantidad());
-            ps.setString(4, ejemplar.getAutor());
-            ps.setFloat(5, ejemplar.getCalificacion());
-            ps.setInt(6, ejemplar.getN_editorial());
-            ps.setLong(7, ejemplar.getIsbn());
+            ps.setString(1, ejemplar.getNombre());
+            ps.setInt(2, ejemplar.getCantidad());
+            ps.setString(3, ejemplar.getAutor());
+            ps.setFloat(4, ejemplar.getCalificacion());
+            ps.setInt(5, ejemplar.getN_editorial());
+            ps.setLong(6, ejemplar.getIsbn());
             ps.execute();
+            long isbn = ejemplar.getIsbn();
+            cAsg.modificar(isbn, generos, cGen);
             return true;
         } catch(SQLException e) {
             System.err.println(e);
@@ -56,6 +57,7 @@ public class ConsultasLibro extends Conexion{
         }
     }
     
+    /*
     public boolean eliminar(Libro ejemplar){
         Connection conn = getUpConnection();
         
@@ -64,6 +66,22 @@ public class ConsultasLibro extends Conexion{
         try {
             ps = conn.prepareStatement(sql);
             ps.setLong(1, ejemplar.getIsbn());
+            ps.execute();
+            return true;
+        } catch(SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+    }*/
+    
+    public boolean eliminar(Long ejemplar){ 
+        Connection conn = getUpConnection();
+        
+        String sql = "DELETE FROM libro WHERE isbn = ?";
+        
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, ejemplar);
             ps.execute();
             return true;
         } catch(SQLException e) {

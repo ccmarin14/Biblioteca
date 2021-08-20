@@ -27,7 +27,6 @@ public class CtrlLibro implements ActionListener{
         this.consultasEdt = consultasEdt;
         this.consultasGen = consultasGen;
         this.consultasAsg = consultasAsg;
-        this.modulo.btnConsultar.addActionListener(this);
         this.modulo.btnEliminar.addActionListener(this);
         this.modulo.btnGuardar.addActionListener(this);
         this.modulo.btnLimpiar.addActionListener(this);
@@ -87,11 +86,15 @@ public class CtrlLibro implements ActionListener{
         
     }
         
-    //Limpiar texto
-    public void limpiar () {
-        modulo.txtISBN.setText(null);
-        modulo.txtNombre.setText(null);
-    }
+    //Limpiar campos texto
+        public void limpiar () {
+            modulo.txtISBN.setText(null);
+            modulo.txtNombre.setText(null);
+            modulo.txtCalificacion.setText(null);
+            modulo.txtCantidad.setText(null);
+            modulo.txtAutor.setText(null);
+            modulo.txtISBN.setEditable(true);//debe de resetear de nuevo todo los parametros
+        }
     
         public void activarBotones(boolean estado) {
         if (estado) {
@@ -131,6 +134,7 @@ public class CtrlLibro implements ActionListener{
             ejemplar.setNombre(modulo.txtNombre.getText());
             ejemplar.setAutor(modulo.txtAutor.getText());
             ejemplar.setN_editorial(consultasEdt.exportarEditorial((String) modulo.listEditorial.getSelectedItem()));
+            //Lista de generos seleccionados
             List<String> generos = modulo.listGenero.getSelectedValuesList();
             ejemplar.setCalificacion(Float.parseFloat(modulo.txtCalificacion.getText()));
             ejemplar.setCantidad(Integer.parseInt(modulo.txtCantidad.getText()));
@@ -146,30 +150,44 @@ public class CtrlLibro implements ActionListener{
         //Botón para limpiar texto
         if (e.getSource() == modulo.btnLimpiar) {
            limpiar();
+           activarBotones(true);
         }
+       
         //Botón para eliminar
         if (e.getSource() == modulo.btnEliminar) {
-            ejemplar.setIsbn(Integer.parseInt(modulo.txtISBN.getText()));
+            ejemplar.setIsbn(Long.parseLong(modulo.txtISBN.getText()));
             //Consulta para eliminar el registro
-            if (consultas.eliminar(ejemplar)) {
+            if (consultas.eliminar(Long.parseLong(modulo.txtISBN.getText())) && consultasAsg.eliminar(Long.parseLong(modulo.txtISBN.getText()))) {
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
                 ajustar();
+                activarBotones(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Error al borrar");
                 limpiar();
             }
         }
-        //Botón para consultar
-        /*if (e.getSource() == modulo.btnConsultar) {
-            ejemplar.setIsbn(Integer.parseInt(modulo.txtISBN.getText()));
-            //Consulta para eliminar el registro
-            if (consultas.consultar()) {
-                modulo.txtNombre.setText(ejemplar.getNombre());
+        
+        // Botón para actualizar datos de texto en objeto genero
+        if (e.getSource() == modulo.btnActualizar) {
+            ejemplar.setIsbn(Long.parseLong(modulo.txtISBN.getText()));
+            ejemplar.setNombre(modulo.txtNombre.getText());
+            ejemplar.setAutor(modulo.txtAutor.getText());
+            ejemplar.setN_editorial(consultasEdt.exportarEditorial((String) modulo.listEditorial.getSelectedItem()));
+            //Lista de generos seleccionados
+            List<String> generos = modulo.listGenero.getSelectedValuesList();
+            ejemplar.setCalificacion(Float.parseFloat(modulo.txtCalificacion.getText()));
+            ejemplar.setCantidad(Integer.parseInt(modulo.txtCantidad.getText()));
+            //Consulta para almacenar los datos del Libro en base de datos
+            if (consultas.modificar(ejemplar, generos, consultasAsg, consultasGen)) {
+                JOptionPane.showMessageDialog(null, "Registro actualizado guardado");
+                ajustar();
+                activarBotones(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Error al consultar");
+                JOptionPane.showMessageDialog(null, "Error al actualizar");
                 limpiar();
-            }            
-        }*/
+            }
+        }
+        
         //Botón para seleccionar y habilitar la edición de un registro
         if (e.getSource() == modulo.btnEditar){
             int fila = modulo.tblLibro.getSelectedRow();
@@ -190,6 +208,9 @@ public class CtrlLibro implements ActionListener{
                 modulo.txtCalificacion.setText(Float.toString(ejemplar.getCalificacion()));
                 modulo.txtCantidad.setText(Integer.toString(ejemplar.getCantidad()));
                 
+                //Asignación de valores a campos especiales
+                modulo.listEditorial.setSelectedItem((String)modulo.tblLibro.getValueAt(fila, 4));
+                               
                 activarBotones(false);
             }
         }
