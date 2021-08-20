@@ -1,7 +1,9 @@
 package control;
 
 import java.awt.event.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import modelo.*;
@@ -11,6 +13,7 @@ public class CtrlLibro implements ActionListener{
 
     private Libro ejemplar;
     private ConsultasLibro consultas;
+    private ConsultasEditorial consultasEdt;
     private ModuloLibro modulo;
     private DefaultTableModel modelo;
     private List<Libro> lstLibro;
@@ -53,6 +56,7 @@ public class CtrlLibro implements ActionListener{
 
             object[0] = lstLibro.get(i).getIsbn();
             object[1] = lstLibro.get(i).getNombre();
+            
             object[2] = lstLibro.get(i).getAutor();
             object[3] = consultas.importarGeneros(lstLibro.get(i).getIsbn());
             object[4] = consultas.importarEditorial(lstLibro.get(i).getN_editorial());
@@ -60,9 +64,26 @@ public class CtrlLibro implements ActionListener{
             object[6] = lstLibro.get(i).getCantidad();
 
             modelo.addRow(object);
-        }
+        }        
         //Paso del modelo a la vista
         modulo.tblLibro.setModel(modelo);
+        
+        //Codido sin definir
+        /*
+        Queue<String> lstEditorial = consultasEdt.nombresEditorial();   
+        
+        List<Editorial> lstEditorial = consultasEdt.consultar();
+        for (int i = 0; i < lstEditorial.size(); i++){
+            modulo.listEditorial.insertItemAt(lstEditorial.get(i).getNombre(), i);
+        }
+        
+        String[] prueba = {"a","b","c"};
+        modulo.listGenero.setListData(prueba);
+        modulo.listEditorial.insertItemAt("Prueba", 0);
+        String[] prueba = {"a","b","c"};
+        modulo.listGenero.setListData(prueba);
+        */
+        
     }
         
     //Limpiar texto
@@ -84,7 +105,7 @@ public class CtrlLibro implements ActionListener{
             modulo.btnEliminar.setEnabled(true);
         }
     }
-
+        
     //Metodo para validar que botón se presiona
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -135,12 +156,18 @@ public class CtrlLibro implements ActionListener{
                 JOptionPane.showMessageDialog(modulo, "Debe seleccionar una fila");
             } else {
                 //Asignar valores de la tabla a las variables
-                ejemplar.setIsbn(Integer.parseInt((String)modulo.tblLibro.getValueAt(fila,0).toString()));
+                ejemplar.setIsbn(Long.parseLong((String)modulo.tblLibro.getValueAt(fila,0).toString()));
                 ejemplar.setNombre((String)modulo.tblLibro.getValueAt(fila,1));
-                
+                ejemplar.setAutor((String)modulo.tblLibro.getValueAt(fila,2));
+                ejemplar.setCalificacion(Float.parseFloat((String)modulo.tblLibro.getValueAt(fila,5).toString()));
+                ejemplar.setCantidad(Integer.parseInt((String)modulo.tblLibro.getValueAt(fila,6).toString()));
+
                 //Mostrar en campos de texto las variables
                 modulo.txtISBN.setText(Long.toString(ejemplar.getIsbn()));
                 modulo.txtNombre.setText(ejemplar.getNombre());
+                modulo.txtAutor.setText(ejemplar.getAutor());
+                modulo.txtCalificacion.setText(Float.toString(ejemplar.getCalificacion()));
+                modulo.txtCantidad.setText(Integer.toString(ejemplar.getCantidad()));
                 
                 activarBotones(false);
             }
@@ -165,6 +192,6 @@ public class CtrlLibro implements ActionListener{
             
             ctrlEdit.iniciar();
             mEdit.setVisible(true);
-        }
+        }        
     } 
 }

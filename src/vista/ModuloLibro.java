@@ -123,12 +123,12 @@ public class ModuloLibro extends javax.swing.JFrame {
             }
         });
 
-        listEditorial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        listEditorial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {""}));
 
         btnGuardar.setText("Guardar");
 
         listGenero.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = {""};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -373,8 +373,8 @@ public class ModuloLibro extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JComboBox<String> listEditorial;
-    private javax.swing.JList<String> listGenero;
-    private javax.swing.JScrollPane scrollGenero;
+    public javax.swing.JList<String> listGenero;
+    public javax.swing.JScrollPane scrollGenero;
     public javax.swing.JTable tblLibro;
     public javax.swing.JTextField txtAutor;
     public javax.swing.JTextField txtCalificacion;

@@ -83,4 +83,24 @@ public class ConsultasEditorial extends Conexion{
         }
         return lstEdit;
     }
+    
+    public Queue nombresEditorial() {
+        Queue<String> lstEditorial = new LinkedList();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection conn = getUpConnection();
+        
+        String sql = "SELECT nombre FROM editorial";
+        
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                lstEditorial.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return lstEditorial;
+    }
 }
