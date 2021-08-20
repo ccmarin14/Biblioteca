@@ -14,14 +14,19 @@ public class CtrlLibro implements ActionListener{
     private Libro ejemplar;
     private ConsultasLibro consultas;
     private ConsultasEditorial consultasEdt;
+    private ConsultasGenero consultasGen;
+    private ConsultasAsignacion consultasAsg;
     private ModuloLibro modulo;
     private DefaultTableModel modelo;
     private List<Libro> lstLibro;
 
-    public CtrlLibro(Libro ejemplar, ConsultasLibro consultas, ModuloLibro modulo) {
+    public CtrlLibro(Libro ejemplar, ConsultasLibro consultas, ModuloLibro modulo, ConsultasEditorial consultasEdt, ConsultasGenero consultasGen, ConsultasAsignacion consultasAsg) {
         this.ejemplar = ejemplar;
         this.consultas = consultas;
         this.modulo = modulo;
+        this.consultasEdt = consultasEdt;
+        this.consultasGen = consultasGen;
+        this.consultasAsg = consultasAsg;
         this.modulo.btnConsultar.addActionListener(this);
         this.modulo.btnEliminar.addActionListener(this);
         this.modulo.btnGuardar.addActionListener(this);
@@ -56,7 +61,6 @@ public class CtrlLibro implements ActionListener{
 
             object[0] = lstLibro.get(i).getIsbn();
             object[1] = lstLibro.get(i).getNombre();
-            
             object[2] = lstLibro.get(i).getAutor();
             object[3] = consultas.importarGeneros(lstLibro.get(i).getIsbn());
             object[4] = consultas.importarEditorial(lstLibro.get(i).getN_editorial());
@@ -68,21 +72,18 @@ public class CtrlLibro implements ActionListener{
         //Paso del modelo a la vista
         modulo.tblLibro.setModel(modelo);
         
-        //Codido sin definir
-        /*
-        Queue<String> lstEditorial = consultasEdt.nombresEditorial();   
-        
+        //Listar editoriales
         List<Editorial> lstEditorial = consultasEdt.consultar();
         for (int i = 0; i < lstEditorial.size(); i++){
             modulo.listEditorial.insertItemAt(lstEditorial.get(i).getNombre(), i);
         }
-        
-        String[] prueba = {"a","b","c"};
-        modulo.listGenero.setListData(prueba);
-        modulo.listEditorial.insertItemAt("Prueba", 0);
-        String[] prueba = {"a","b","c"};
-        modulo.listGenero.setListData(prueba);
-        */
+        //listar generos
+        List<Genero> lstGenero = consultasGen.consultar();
+        String[] generos = new String[lstGenero.size()];
+        for (int i = 0; i < lstGenero.size(); i++){
+            generos[i] = lstGenero.get(i).getNombre();
+        }
+        modulo.listGenero.setListData(generos);
         
     }
         
@@ -106,17 +107,37 @@ public class CtrlLibro implements ActionListener{
         }
     }
         
+   public void limpiarTabla() {
+        for (int i = 0; i < modulo.tblLibro.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i-=1;
+        }
+    }
+        
+    //Consolidación de metodos
+    public void ajustar () {
+        limpiarTabla();
+        limpiar();
+        listar();
+    }
+        
     //Metodo para validar que botón se presiona
     @Override
     public void actionPerformed(ActionEvent e) {
         // Botón para guardar datos de texto en objeto Libro
         if (e.getSource() == modulo.btnGuardar) {
-            ejemplar.setIsbn(Integer.parseInt(modulo.txtISBN.getText()));
+            
+            ejemplar.setIsbn(Long.parseLong(modulo.txtISBN.getText()));
             ejemplar.setNombre(modulo.txtNombre.getText());
+            ejemplar.setAutor(modulo.txtAutor.getText());
+            ejemplar.setN_editorial(consultasEdt.exportarEditorial((String) modulo.listEditorial.getSelectedItem()));
+            List<String> generos = modulo.listGenero.getSelectedValuesList();
+            ejemplar.setCalificacion(Float.parseFloat(modulo.txtCalificacion.getText()));
+            ejemplar.setCantidad(Integer.parseInt(modulo.txtCantidad.getText()));
             //Consulta para almacenar los datos del Libro en base de datos
-            if (consultas.registrar(ejemplar)) {
+            if (consultas.registrar(ejemplar, generos, consultasAsg, consultasGen)) {
                 JOptionPane.showMessageDialog(null, "Registro guardado");
-                limpiar();
+                ajustar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al guardar");
                 limpiar();
@@ -132,7 +153,7 @@ public class CtrlLibro implements ActionListener{
             //Consulta para eliminar el registro
             if (consultas.eliminar(ejemplar)) {
                 JOptionPane.showMessageDialog(null, "Registro eliminado");
-                limpiar();
+                ajustar();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al borrar");
                 limpiar();
@@ -192,6 +213,7 @@ public class CtrlLibro implements ActionListener{
             
             ctrlEdit.iniciar();
             mEdit.setVisible(true);
-        }        
+            mEdit.dispose();
+        } 
     } 
 }

@@ -6,14 +6,15 @@ import java.util.*;
 public class ConsultasLibro extends Conexion{
     
     //Variables
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+    private PreparedStatement ps = null;
+    private ResultSet rs = null;
+
     
-    public boolean registrar(Libro ejemplar){
+    public boolean registrar(Libro ejemplar, List<String> generos, ConsultasAsignacion cAsg, ConsultasGenero cGen ){
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO libro (isbn, nombre, cantidad, autor, calificacion, n_editorial) VALUES (?,?,?,?,?,?)";
-        
+
         try {
             ps = conn.prepareStatement(sql);
             ps.setLong(1, ejemplar.getIsbn());
@@ -23,11 +24,14 @@ public class ConsultasLibro extends Conexion{
             ps.setFloat(5, ejemplar.getCalificacion());
             ps.setInt(6, ejemplar.getN_editorial());
             ps.execute();
+            long isbn = ejemplar.getIsbn();
+            cAsg.registrar(isbn, generos, cGen);
             return true;
         } catch(SQLException e) {
             System.err.println(e);
             return false;
         }
+
     }
     
     public boolean modificar(Libro ejemplar){
@@ -82,7 +86,6 @@ public class ConsultasLibro extends Conexion{
                 ejp.setIsbn(rs.getLong(1));
                 ejp.setNombre(rs.getString(2));
                 ejp.setCantidad(rs.getInt(3));
-                //Reemplazar para que importe el nombre
                 ejp.setAutor(rs.getString(4));
                 ejp.setCalificacion(rs.getFloat(5));
                 ejp.setN_editorial(rs.getInt(6));

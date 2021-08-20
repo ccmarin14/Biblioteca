@@ -79,4 +79,22 @@ public class ConsultasGenero extends Conexion{
         }
         return lstGen;
     }
+    
+    public int exportarGenero (String genero) {
+        int idGenero = 0;
+        Connection conn = getUpConnection();
+        
+         String sql = "SELECT id_genero FROM genero WHERE nombre = ?";
+         
+         try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, genero);
+            rs = ps.executeQuery();
+            rs.next();
+            idGenero = rs.getInt(1);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return idGenero;
+    }
 }

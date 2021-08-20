@@ -5,8 +5,10 @@ import java.util.*;
 
 public class ConsultasEditorial extends Conexion{
     
+    private PreparedStatement ps = null;
+    private ResultSet rs = null;
+    
     public boolean registrar(Editorial edit){
-        PreparedStatement ps  =  null;
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO editorial (id_editorial,nombre,pais) VALUES(?,?,?)";
@@ -24,7 +26,6 @@ public class ConsultasEditorial extends Conexion{
     }
     
     public boolean modificar(Editorial edit){
-        PreparedStatement ps  =  null;
         Connection conn = getUpConnection();
 
         String sql = "UPDATE editorial SET nombre = ?, pais = ? WHERE id_editorial =?";
@@ -43,7 +44,6 @@ public class ConsultasEditorial extends Conexion{
     }
     
     public boolean eliminar(Editorial edit){
-        PreparedStatement ps  =  null;
         Connection conn = getUpConnection();
 
         String sql = "DELETE FROM editorial WHERE id_editorial =?" ;
@@ -59,11 +59,8 @@ public class ConsultasEditorial extends Conexion{
         }
     }
     
-    
     public List consultar() {
         List<Editorial> lstEdit = new ArrayList<>();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         Connection conn = getUpConnection();
         
         String sql = "SELECT * FROM editorial";
@@ -84,23 +81,21 @@ public class ConsultasEditorial extends Conexion{
         return lstEdit;
     }
     
-    public Queue nombresEditorial() {
-        Queue<String> lstEditorial = new LinkedList();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+    public int exportarEditorial(String edt) {
+        int idEditorial = 0;
         Connection conn = getUpConnection();
         
-        String sql = "SELECT nombre FROM editorial";
-        
-        try {
+        String sql = "SELECT id_editorial FROM editorial WHERE nombre = ?";
+         
+         try {
             ps = conn.prepareStatement(sql);
+            ps.setString(1, edt);
             rs = ps.executeQuery();
-            while (rs.next()) {
-                lstEditorial.add(rs.getString(1));
-            }
+            rs.next();
+            idEditorial = rs.getInt(1);
         } catch (Exception e) {
             System.err.println(e);
         }
-        return lstEditorial;
+        return idEditorial;
     }
 }

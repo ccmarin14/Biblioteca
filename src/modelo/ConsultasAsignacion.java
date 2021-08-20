@@ -4,24 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 public class ConsultasAsignacion extends Conexion{
     
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        private PreparedStatement ps = null;
+        private ResultSet rs = null;
     
-    public boolean registrar(Asignacion asg){
+    public boolean registrar(long isbn, List<String> generos, ConsultasGenero cGen){
         Connection conn = getUpConnection();
         
         String sql = "INSERT INTO asignacion (n_isbn, n_genero) VALUES (?,?)";
-        
+
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, asg.getN_isbn());
-            ps.setInt(2, asg.getN_genero());
-            ps.execute();
+            for (int i = 0; i < generos.size(); i++) {
+                ps = conn.prepareStatement(sql);
+                ps.setLong(1, isbn);
+                ps.setInt(2, cGen.exportarGenero(generos.get(i)));
+                ps.execute();
+            }
             return true;
         } catch(SQLException e) {
             System.err.println(e);
