@@ -23,8 +23,7 @@ public class CtrlGenero implements ActionListener{
         this.modulo.btnGuardar.addActionListener(this);
         this.modulo.btnLimpiar.addActionListener(this);
         this.modulo.btnEditar.addActionListener(this);
-        this.modulo.btnActualizar.addActionListener(this);
-        
+        this.modulo.btnActualizar.addActionListener(this);        
     }
     
     //Parametrizar vista

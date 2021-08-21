@@ -34,6 +34,8 @@ public class CtrlLibro implements ActionListener{
         this.modulo.btnEditar.addActionListener(this);
         this.modulo.btnEditarEditoriales.addActionListener(this);
         this.modulo.btnEditarGeneros.addActionListener(this);
+        this.modulo.btnActEdit.addActionListener(this);
+        this.modulo.btnActGen.addActionListener(this);
     }
     
     //Parametrizar vista
@@ -72,10 +74,12 @@ public class CtrlLibro implements ActionListener{
         modulo.tblLibro.setModel(modelo);
         
         //Listar editoriales
+        modulo.listEditorial.removeAllItems();
         List<Editorial> lstEditorial = consultasEdt.consultar();
         for (int i = 0; i < lstEditorial.size(); i++){
             modulo.listEditorial.insertItemAt(lstEditorial.get(i).getNombre(), i);
         }
+        /*modulo.listGenero.setSelectedIndex(0);*/
         //listar generos
         List<Genero> lstGenero = consultasGen.consultar();
         String[] generos = new String[lstGenero.size()];
@@ -93,7 +97,7 @@ public class CtrlLibro implements ActionListener{
             modulo.txtCalificacion.setText(null);
             modulo.txtCantidad.setText(null);
             modulo.txtAutor.setText(null);
-            modulo.txtISBN.setEditable(true);//debe de resetear de nuevo todo los parametros
+            modulo.txtISBN.setEditable(true);
         }
     
         public void activarBotones(boolean estado) {
@@ -245,6 +249,12 @@ public class CtrlLibro implements ActionListener{
             
             ctrlEdit.iniciar();
             mEdit.setVisible(true);
-        } 
+        }
+        
+        //Botón para actualizar lista editorial o lista genero
+        if (e.getSource() == modulo.btnActEdit || e.getSource() == modulo.btnActGen){
+            
+            ajustar();
+        }
     } 
 }
