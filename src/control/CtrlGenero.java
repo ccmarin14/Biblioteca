@@ -95,6 +95,13 @@ public class CtrlGenero implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // Botón para guardar datos de texto en objeto genero
         if (e.getSource() == modulo.btnGuardar) {
+            //Validar campo númerico para idGenero
+            try {
+            Integer.parseInt(modulo.txtId.getText());
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Por favor inserte un valor númerico para el ID Genero");
+                limpiar();
+            }
             gen.setId_genero(Integer.parseInt(modulo.txtId.getText()));
             gen.setNombre(modulo.txtNombre.getText());
             //Consulta para almacenar los datos del genero en base de datos

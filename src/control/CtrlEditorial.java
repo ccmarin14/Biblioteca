@@ -96,6 +96,13 @@ public class CtrlEditorial implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // Botón para guardar datos de texto en objeto editorial
         if (e.getSource() == modulo.btnGuardar) {
+            //Validar campo númerico para idEditorial
+            try {
+            Integer.parseInt(modulo.txtId.getText());
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Por favor inserte un valor númerico para el ID Editorial");
+                limpiar();
+            }
             edit.setId_editorial(Integer.parseInt(modulo.txtId.getText()));
             edit.setNombre(modulo.txtNombre.getText());
             edit.setPais(modulo.txtPais.getText());
@@ -141,7 +148,6 @@ public class CtrlEditorial implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Error al borrar");
                 limpiar();
             }
-        ajustar(); //PRUEBA
         }
 
         //Botón para seleccionar y habilitar la edición de un registro
@@ -161,7 +167,6 @@ public class CtrlEditorial implements ActionListener{
                 modulo.txtPais.setText(edit.getPais());
                 activarBotones(false);
             }
-            
-        }        
+        }
     }
 }

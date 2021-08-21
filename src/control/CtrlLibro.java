@@ -128,9 +128,20 @@ public class CtrlLibro implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // Botón para guardar datos de texto en objeto Libro
+
         if (e.getSource() == modulo.btnGuardar) {
+            //Validaciones de campos
+            try {
+            Long.parseLong(modulo.txtISBN.getText());
+            Float.parseFloat(modulo.txtCalificacion.getText());
+            Integer.parseInt(modulo.txtCantidad.getText());
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Por favor verifique que los campos: ISBN, Calificación o Cantidad sean númericos");
+                limpiar();
+            }
             
-            ejemplar.setIsbn(Long.parseLong(modulo.txtISBN.getText()));
+            //Asignar valores a los atributos del objeto
+            ejemplar.setIsbn(Long.parseLong(modulo.txtISBN.getText())); 
             ejemplar.setNombre(modulo.txtNombre.getText());
             ejemplar.setAutor(modulo.txtAutor.getText());
             ejemplar.setN_editorial(consultasEdt.exportarEditorial((String) modulo.listEditorial.getSelectedItem()));
@@ -234,7 +245,6 @@ public class CtrlLibro implements ActionListener{
             
             ctrlEdit.iniciar();
             mEdit.setVisible(true);
-            mEdit.dispose();
         } 
     } 
 }
